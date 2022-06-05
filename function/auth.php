@@ -1,1 +1,4 @@
 <?php
+function UserAuth(){
+    //Авторизация
+}

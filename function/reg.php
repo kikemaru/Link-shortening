@@ -1,1 +1,4 @@
 <?php
+function UserReg(){
+    //Регистрация
+}
