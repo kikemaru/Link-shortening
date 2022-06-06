@@ -6,6 +6,7 @@ if (isset($_POST['login'])){
     $rs = $db->query("SELECT * FROM users WHERE login = '$login'")->fetch();
     if (!empty($rs['login'])){
         if ($pass == $rs['password']){
+            //Создать сеанс и направить в личный кабинет
             echo "Успешная авторизация!";
         } else {
             //Неверный пароль
