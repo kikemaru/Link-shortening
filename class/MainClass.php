@@ -68,8 +68,10 @@ class MainClass
 
 
     //Сокращение ссылки
-    public function ShortLink($primerylink, $user)
+    public function ShortLink($primerylink)
     {
+
+        $user = $this->user;
         /*
          * Генерация кода для сокращенной ссылки.
          * Генерируем соль и создаем хэш строки.
@@ -84,7 +86,7 @@ class MainClass
 
         //Создаем хэш
         $hash = md5($salt, $primerylink, $user, $today);
-        $string = substr($hash, 0, 8);
+        $string = substr($hash, 0, 6); //Обрезаем до 6 символов
 
         //Проверяем, есть ли такой код ссылки в базе данных:
         $rs = $this->db->query("SELECT * FROM link WHERE code_link = '$string'")->fetch();
