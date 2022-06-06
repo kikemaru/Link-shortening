@@ -2,11 +2,19 @@
 
 use PDO;
 
+/*
+ * Основные методы для взаимодействия с базой данных
+ * - Авторизация
+ * - Регистрация
+ * - ...
+ */
+
 class MainClass
 {
     private $user;
     private $db;
 
+    //Конструктор
     public function __construct($user = "empty", $id = "empty")
     {
         $this->user = $user;
