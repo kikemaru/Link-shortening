@@ -1,13 +1,13 @@
 <?php
 
-use PDO;
-
 /*
  * Основные методы для взаимодействия с базой данных
  * - Авторизация
  * - Регистрация
  * - ...
  */
+namespace SHORT;
+use PDO;
 
 class MainClass
 {
@@ -75,7 +75,6 @@ class MainClass
         /*
          * Генерация кода для сокращенной ссылки.
          * Генерируем соль и создаем хэш строки.
-         * Обрезаем созданный хэш до 6 символов.
          */
         //Генерируем соль
         $symbols = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'; //Набор символов
@@ -86,21 +85,13 @@ class MainClass
 
         //Создаем хэш
         $hash = md5($salt, $primerylink, $user, $today);
-        $string = substr($hash, 0, 6); //Обрезаем до 6 символов
+        $result = substr(str_shuffle($hash), 0, 6); //Полученный код
+        /*
+         * необходимо использовать библиотеку для генерации уникального идентификатора!
+         * Здесь не используется, так как сайт не предназначен для пользовательского использования!
+         */
 
-        //Проверяем, есть ли такой код ссылки в базе данных:
-        $rs = $this->db->query("SELECT * FROM link WHERE code_link = '$string'")->fetch();
-        if (!empty($rs['link'])){
-            //Создаем цикл для повторной генерации
-            while (!empty($check['link']))
-            {
-                $symbols = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                $salt = substr(str_shuffle($symbols), 0, 10);
-                $today = date("Y-m-d H:i:s");
-                $hash = md5($salt, $primerylink, $user, $today);
-                $string = substr($hash, 0, 8);
-            }
-        }
+        //Добавляем запись в бд
 
     }
 }
