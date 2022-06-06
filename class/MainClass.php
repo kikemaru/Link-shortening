@@ -15,7 +15,7 @@ class MainClass
     private $db;
 
     //Конструктор
-    public function __construct($user = "empty", $id = "empty")
+    public function __construct($user = "empty")
     {
         $this->user = $user;
         $this->db = new PDO('mysql:host=localhost;dbname=short', 'root', '');
