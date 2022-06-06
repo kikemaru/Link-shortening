@@ -1,19 +1,11 @@
 <?php
 include_once './db_connect.php';
+include_once './class/MainClass.php';
 if (isset($_POST['login'])){
     $login = $_POST['login'];
-    $pass = md5($_POST['pass']);
-    $rs = $db->query("SELECT * FROM users WHERE login = '$login'")->fetch();
-    if (!empty($rs['login'])){
-        if ($pass == $rs['password']){
-            //Создать сеанс и направить в личный кабинет
-            echo "Успешная авторизация!";
-        } else {
-            //Неверный пароль
-        }
-    } else {
-        //Несуществующий пользователь
-    }
+    $pass = $_POST['pass'];
+    $auth = new MainClass();
+    $auth->AuthUser($login, $pass);
 }
 ?>
 <!doctype html>
