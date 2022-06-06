@@ -1,12 +1,13 @@
 <?php
 
-use PDO;
+use PDO; //Пространство имен PDO
 /*
  * Основные методы для взаимодействия с базой данных
  * - Авторизация
  * - Регистрация
  * - ...
  * Важно! Отсутствуют проверки в запросах и защита бд!
+ * Также, возможно упрощение sql запросов
  */
 
     class MainClass
@@ -17,8 +18,13 @@ use PDO;
         //Конструктор
         public function __construct($user = "empty")
         {
-            $this->user = $user;
-            $this->db = new PDO('mysql:host=localhost;dbname=short', 'root', '');
+            $this->user = $user; //id пользователя
+            /*
+             * Используется PDO для работы с бд
+             * Для настройки подключения необходимо изменить параметры в свойстве db
+             *
+             */
+            $this->db = new PDO('mysql:host=localhost;dbname=short', 'root', ''); //Подключение к бд
         }
 
 
