@@ -6,16 +6,17 @@ class MainClass
 {
     private $user;
     private $db;
-    private $idlink;
 
     public function __construct($user = "empty", $id = "empty")
     {
         $this->user = $user;
-        $this->idlink = $id;
         $this->db = new PDO('mysql:host=localhost;dbname=short', 'root', '');
     }
 
-    public function AuthUser($login, $password){
+
+    //Авторизация пользователя
+    public function AuthUser($login, $password)
+    {
         $ulogin = $login;
         $upass = md5($password);
 
@@ -30,6 +31,28 @@ class MainClass
         } else {
             echo "Error user";
             //Несуществующий пользователь
+        }
+    }
+
+
+    //Регистрация пользователя
+    public function RegUser($login, $email, $pass, $rpass)
+    {
+        $password = md5($pass);
+
+        $reg = $this->db->query("SELECT * FROM users WHERE login = '$login'")->fetch();
+        if (empty($reg['login'])){
+            if (empty($reg['email'])){
+                if ($pass == $rpass){
+                    //Регистрируем пользователя
+                } else {
+                    //Не совпадают пароли!
+                }
+            } else {
+                //Такая эл.почта уже используется!
+            }
+        } else {
+            //Такой логин уже используется!
         }
     }
 }
