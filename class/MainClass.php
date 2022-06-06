@@ -69,7 +69,7 @@ use PDO;
         //Сокращение ссылки
         public function ShortLink($primerylink)
         {
-
+            $status = 0; //Начальный статус (ссылка работает)
             $user = $this->user;
             /*
              * Генерация кода для сокращенной ссылки.
@@ -91,6 +91,7 @@ use PDO;
              */
 
             //Добавляем запись в бд
-
+            $inbase = $this->db->query("INSERT INTO link VALUES (NULL, '$result', '$primerylink', '$user', '$status')");
+            return $result; //Вернем созданный код
         }
 }
