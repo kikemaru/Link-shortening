@@ -65,4 +65,40 @@ class MainClass
             //Такой логин уже используется!
         }
     }
+
+
+    //Сокращение ссылки
+    public function ShortLink($primerylink, $user)
+    {
+        /*
+         * Генерация кода для сокращенной ссылки.
+         * Генерируем соль и создаем хэш строки.
+         * Обрезаем созданный хэш до 6 символов.
+         */
+        //Генерируем соль
+        $symbols = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'; //Набор символов
+        $salt = substr(str_shuffle($symbols), 0, 10); //Генерация строки
+
+        //Определяем сегодняшний день и время для уникализации хэша
+        $today = date("Y-m-d H:i:s");
+
+        //Создаем хэш
+        $hash = md5($salt, $primerylink, $user, $today);
+        $string = substr($hash, 0, 8);
+
+        //Проверяем, есть ли такой код ссылки в базе данных:
+        $rs = $this->db->query("SELECT * FROM link WHERE code_link = '$string'")->fetch();
+        if (!empty($rs['link'])){
+            //Создаем цикл для повторной генерации
+            while (!empty($check['link']))
+            {
+                $symbols = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                $salt = substr(str_shuffle($symbols), 0, 10);
+                $today = date("Y-m-d H:i:s");
+                $hash = md5($salt, $primerylink, $user, $today);
+                $string = substr($hash, 0, 8);
+            }
+        }
+
+    }
 }
