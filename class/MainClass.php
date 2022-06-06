@@ -6,6 +6,7 @@ use PDO;
  * - Авторизация
  * - Регистрация
  * - ...
+ * Важно! Отсутствуют проверки в запросах и защита бд!
  */
 
     class MainClass
@@ -93,5 +94,26 @@ use PDO;
             //Добавляем запись в бд
             $inbase = $this->db->query("INSERT INTO link VALUES (NULL, '$result', '$primerylink', '$user', '$status')");
             return $result; //Вернем созданный код
+        }
+
+
+        //Изменение статуса ссылки
+        public function UpdateStatus($status, $id)
+        {
+            //Проверяем текущий статус
+            $rs = $this->db->query("SELECT * FROM link WHERE id='$id'")->fetch();
+
+            //Если текущий статус не равен устанавливаемому, то меняем
+            if ($rs['status'] != $status)
+            {
+                $this->db->query("UPDATE link SET status = '$status' WHERE id = '$id'");
+            }
+        }
+
+
+        //Удаление ссылки
+        public function DeleteLink($id)
+        {
+            //Проверяем, существует ли такая ссылка
         }
 }
