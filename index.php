@@ -1,5 +1,4 @@
 <?php
-include_once './db_connect.php';
 include_once './class/MainClass.php';
 if (isset($_POST['login'])){
     $login = $_POST['login'];

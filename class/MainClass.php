@@ -1,97 +1,96 @@
 <?php
 
+use PDO;
 /*
  * Основные методы для взаимодействия с базой данных
  * - Авторизация
  * - Регистрация
  * - ...
  */
-namespace SHORT;
-use PDO;
 
-class MainClass
-{
-    private $user;
-    private $db;
-
-    //Конструктор
-    public function __construct($user = "empty")
+    class MainClass
     {
-        $this->user = $user;
-        $this->db = new PDO('mysql:host=localhost;dbname=short', 'root', '');
-    }
+        private $user;
+        private $db;
 
-
-    //Авторизация пользователя
-    public function AuthUser($login, $password)
-    {
-        $ulogin = $login;
-        $upass = md5($password);
-
-        $auth = $this->db->query("SELECT * FROM users WHERE login = '$ulogin'")->fetch();
-        if (!empty($auth['login'])){
-            if ($upass == $auth['password']){
-                echo "OK";
-            } else {
-                echo "Error pass";
-                //Неверный пароль
-            }
-        } else {
-            echo "Error user";
-            //Несуществующий пользователь
+        //Конструктор
+        public function __construct($user = "empty")
+        {
+            $this->user = $user;
+            $this->db = new PDO('mysql:host=localhost;dbname=short', 'root', '');
         }
-    }
 
 
-    //Регистрация пользователя
-    public function RegUser($login, $email, $pass, $rpass)
-    {
-        $password = md5($pass);
+        //Авторизация пользователя
+        public function AuthUser($login, $password)
+        {
+            $ulogin = $login;
+            $upass = md5($password);
 
-        $reg = $this->db->query("SELECT * FROM users WHERE login = '$login'")->fetch();
-        if (empty($reg['login'])){
-            if (empty($reg['email'])){
-                if ($pass == $rpass){
-                    /*Регистрируем пользователя.
-                    Послать письмо подтверждения на почту.
-                    */
+            $auth = $this->db->query("SELECT * FROM users WHERE login = '$ulogin'")->fetch();
+            if (!empty($auth['login'])) {
+                if ($upass == $auth['password']) {
+                    echo "OK";
                 } else {
-                    //Не совпадают пароли!
+                    echo "Error pass";
+                    //Неверный пароль
                 }
             } else {
-                //Такая эл.почта уже используется!
+                echo "Error user";
+                //Несуществующий пользователь
             }
-        } else {
-            //Такой логин уже используется!
         }
-    }
 
 
-    //Сокращение ссылки
-    public function ShortLink($primerylink)
-    {
+        //Регистрация пользователя
+        public function RegUser($login, $email, $pass, $rpass)
+        {
+            $password = md5($pass);
 
-        $user = $this->user;
-        /*
-         * Генерация кода для сокращенной ссылки.
-         * Генерируем соль и создаем хэш строки.
-         */
-        //Генерируем соль
-        $symbols = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'; //Набор символов
-        $salt = substr(str_shuffle($symbols), 0, 10); //Генерация строки
+            $reg = $this->db->query("SELECT * FROM users WHERE login = '$login'")->fetch();
+            if (empty($reg['login'])) {
+                if (empty($reg['email'])) {
+                    if ($pass == $rpass) {
+                        /*Регистрируем пользователя.
+                        Послать письмо подтверждения на почту.
+                        */
+                    } else {
+                        //Не совпадают пароли!
+                    }
+                } else {
+                    //Такая эл.почта уже используется!
+                }
+            } else {
+                //Такой логин уже используется!
+            }
+        }
 
-        //Определяем сегодняшний день и время для уникализации хэша
-        $today = date("Y-m-d H:i:s");
 
-        //Создаем хэш
-        $hash = md5($salt, $primerylink, $user, $today);
-        $result = substr(str_shuffle($hash), 0, 6); //Полученный код
-        /*
-         * необходимо использовать библиотеку для генерации уникального идентификатора!
-         * Здесь не используется, так как это демонстративная версия
-         */
+        //Сокращение ссылки
+        public function ShortLink($primerylink)
+        {
 
-        //Добавляем запись в бд
+            $user = $this->user;
+            /*
+             * Генерация кода для сокращенной ссылки.
+             * Генерируем соль и создаем хэш строки.
+             */
+            //Генерируем соль
+            $symbols = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'; //Набор символов
+            $salt = substr(str_shuffle($symbols), 0, 10); //Генерация строки
 
-    }
+            //Определяем сегодняшний день и время для уникализации хэша
+            $today = date("Y-m-d H:i:s");
+
+            //Создаем хэш
+            $hash = md5($salt, $primerylink, $user, $today);
+            $result = substr(str_shuffle($hash), 0, 6); //Полученный код
+            /*
+             * необходимо использовать библиотеку для генерации уникального идентификатора!
+             * Здесь не используется, так как это демонстративная версия
+             */
+
+            //Добавляем запись в бд
+
+        }
 }
