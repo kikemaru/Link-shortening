@@ -1,13 +1,11 @@
 <?php
 
-function SetStatus($id_link, $status){
+/*
+ * Содержатся функции не имеющие отношения к взаимодействию "User - DataBase"
+ * Работа с сеансами
+ */
 
-}
-
-function DeleteLink($id_link){
-
-}
-
-function ClearLog($id_link){
-
+function UserQuit($login)
+{
+    //Уничтожение сессии
 }
