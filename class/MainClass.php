@@ -136,4 +136,38 @@ use PDO; //Пространство имен PDO
                 $this->db->commit();
             }
         }
+
+
+        //Очистка логов определенной ссылки
+        public function CleanLog($id)
+        {
+
+            //Проверяем существует ли такая ссылка
+            $rs = $this->db->query("SELECT * FROM link WHERE id='$id'")->fetch();
+
+            if (!empty($rs['code_link']))
+            {
+
+                //Очищаем весь лог
+                $clean = $this->db->query("DELETE FROM log WHERE id_link = '$id'");
+            }
+        }
+
+
+        //Выгрузка файла с логом ссылки
+        public function DownloadLog($id)
+        {
+                //создаем виртуальный файл
+                header('Content-disposition: attachment; filename=log.txt');
+                header('Content-type: text/plain');
+                // делаем запись в файл
+                echo "[ ";
+                echo " Дата:  |";
+                echo " Client:  |";
+                echo " Откуда:  |";
+                echo " Ip: ] \r\n";
+            }
+
+
+
 }
