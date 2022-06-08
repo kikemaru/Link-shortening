@@ -121,5 +121,19 @@ use PDO; //Пространство имен PDO
         public function DeleteLink($id)
         {
             //Проверяем, существует ли такая ссылка
+            $rs = $this->db->query("SELECT * FROM link WHERE id='$id'")->fetch();
+            if (!empty($rs['code_link']))
+            {
+                //Реализуем транзакцию, чтобы в комплекте удалять все логи данной ссылки
+                try {
+                    $this->db->beginTransaction();
+                    $this->db->exec("DELETE FROM link WHERE id='$id'"); //Удаляем ссылку
+                    $this->db->exec("DELETE FROM log WHERE id_link = '$id'"); //Удаляем логи
+                } catch (PDOException $error){
+                    $this->db->rollBack();
+                    exit();
+                }
+                $this->db->commit();
+            }
         }
 }
