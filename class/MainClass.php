@@ -157,16 +157,36 @@ use PDO; //Пространство имен PDO
         //Выгрузка файла с логом ссылки
         public function DownloadLog($id)
         {
+
+            //Вывод данных
+            $rs = $this->db->query("SELECT * FROM log WHERE id_link='$id'")->fetch();
+
+            $date = $rs['date_time']; //Дата и время лога
+            $client = $rs['client']; //Браузер (устройство)
+            $ref = $rs['referer']; //Откуда переход
+            $ip = $rs['ip']; //ip адрес
+
+
                 //создаем виртуальный файл
                 header('Content-disposition: attachment; filename=log.txt');
                 header('Content-type: text/plain');
                 // делаем запись в файл
                 echo "[ ";
-                echo " Дата:  |";
-                echo " Client:  |";
-                echo " Откуда:  |";
-                echo " Ip: ] \r\n";
+                echo " Дата: $date |";
+                echo " Client: $client |";
+                echo " Откуда: $ref |";
+                echo " Ip: $ip ] \r\n";
+
+                /*
+                 * Желательно переделать и организовать генерацию pdf файла
+                 * для pdf использовать библиотеку dompdf
+                 */
+
+
             }
+
+
+
 
 
 
