@@ -15,9 +15,9 @@
           <a class="navbar-brand" href="#">LinkShorter</a>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-              <a class="nav-link active" aria-current="page" href="mainlist.html">Главная</a>
-              <a class="nav-link" href="reglist.html">Регистрация</a>
-              <a class="nav-link" href="authorizationlist.html">Личный кабинет</a>
+              <a class="nav-link active" aria-current="page" href="./">Главная</a>
+              <a class="nav-link" href="./pages/reglist.html">Регистрация</a>
+              <a class="nav-link" href="./pages/authorizationlist.html">Личный кабинет</a>
             </div>
           </div>
         </div>
@@ -28,9 +28,9 @@
         <h1 class="display-3">Сокращатель ссылок</h1>
         <p class="lead">Здесь вы можете сократить длинные ссылки и проводить анализ по их использованию</p>
         <div class="shorter">
-          <form method="LINK" action="authorizationlist.html">
-              <input type="text" name="linkk" size="100">
-              <button type="submit" class="btn btn-primary">Сократить</button>
+          <form method="POST" action="./function/function.php">
+              <input type="text" name="link" size="100" required placeholder="http://...">
+              <input type="submit" value="Сократить" class="btn btn-primary">
           </form>
         </div>
       </div>

@@ -37,47 +37,67 @@ use PDO; //Пространство имен PDO
             $auth = $this->db->query("SELECT * FROM users WHERE login = '$ulogin'")->fetch();
             if (!empty($auth['login'])) {
                 if ($upass == $auth['password']) {
-                    echo "OK";
+                    return "success";
                 } else {
-                    echo "Error pass";
+                    return "password";
                     //Неверный пароль
                 }
             } else {
-                echo "Error user";
+                return "user";
                 //Несуществующий пользователь
             }
         }
+
+
 
 
         //Регистрация пользователя
         public function RegUser($login, $email, $pass, $rpass)
         {
             $password = md5($pass);
+            $null = 0;
+
+            $today = date("H:i:s");
+            $hash = md5("$login and $today");
 
             $reg = $this->db->query("SELECT * FROM users WHERE login = '$login'")->fetch();
             if (empty($reg['login'])) {
                 if (empty($reg['email'])) {
                     if ($pass == $rpass) {
-                        /*Регистрируем пользователя.
-                        Послать письмо подтверждения на почту.
-                        */
+                        echo $hash;
+                        //Регистрируем пользователя.
+                       $this->db->query("INSERT INTO users VALUES (NULL, '$login', '$password', '$email', '$null', '$hash')");
+                        //Послать письмо подтверждения на почту.
+                        mail($email, "Подтверждение регистрации", "Перейдите по ссылке, чтобы подтвердить регистрацию \n http://localhost/short/?reg=$hash");
+
+                        //Если был запрос на создание ссылки
+                        $rsl = $this->db->query("SELECT * FROM users WHERE login = '$login'")->fetch();
+                        $iduser = $rsl['id'];
+                        $this->ShortLink($_SESSION['new_link'], $iduser);
+                        return "success";
                     } else {
-                        //Не совпадают пароли!
+                        return "errorpass";
                     }
                 } else {
-                    //Такая эл.почта уже используется!
+                    return "errormail";
                 }
             } else {
-                //Такой логин уже используется!
+                return "errorlogin";
             }
         }
 
 
+
+
         //Сокращение ссылки
-        public function ShortLink($primerylink)
+        public function ShortLink($primerylink, $uid = '')
         {
             $status = 0; //Начальный статус (ссылка работает)
-            $user = $this->user;
+            if (empty($uid)) {
+                $user = $this->user;
+            } else {
+                $user = $uid;
+            }
             /*
              * Генерация кода для сокращенной ссылки.
              * Генерируем соль и создаем хэш строки.
@@ -90,7 +110,7 @@ use PDO; //Пространство имен PDO
             $today = date("Y-m-d H:i:s");
 
             //Создаем хэш
-            $hash = md5($salt, $primerylink, $user, $today);
+            $hash = md5("$salt - $primerylink - $user - $today");
             $result = substr(str_shuffle($hash), 0, 6); //Полученный код
             /*
              * необходимо использовать библиотеку для генерации уникального идентификатора!
@@ -101,6 +121,7 @@ use PDO; //Пространство имен PDO
             $inbase = $this->db->query("INSERT INTO link VALUES (NULL, '$result', '$primerylink', '$user', '$status')");
             return $result; //Вернем созданный код
         }
+
 
 
         //Изменение статуса ссылки
@@ -115,6 +136,8 @@ use PDO; //Пространство имен PDO
                 $this->db->query("UPDATE link SET status = '$status' WHERE id = '$id'");
             }
         }
+
+
 
 
         //Удаление ссылки
@@ -138,6 +161,8 @@ use PDO; //Пространство имен PDO
         }
 
 
+
+
         //Очистка логов определенной ссылки
         public function CleanLog($id)
         {
@@ -152,6 +177,8 @@ use PDO; //Пространство имен PDO
                 $clean = $this->db->query("DELETE FROM log WHERE id_link = '$id'");
             }
         }
+
+
 
 
         //Выгрузка файла с логом ссылки

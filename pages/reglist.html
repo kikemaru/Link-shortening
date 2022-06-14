@@ -14,7 +14,7 @@
           <a class="navbar-brand" href="#">LinkShorter</a>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-              <a class="nav-link" href="mainlist.html">Главная</a>
+              <a class="nav-link" href="../">Главная</a>
               <a class="nav-link active" aria-current="page" href="reglist.html">Регистрация</a>
               <a class="nav-link" href="authorizationlist.html">Личный кабинет</a>
             </div>
@@ -25,29 +25,25 @@
         <div class="container">
       <div class="content">
         <h2>Зарегистрируйтесь</h2>
-        <a href="authorizationlist.html">Уже есть аккаунт</a>
-        <form>
+        <a href="./authorizationlist.html">Уже есть аккаунт</a>
+        <form method="POST" action="../function/function.php">
             <div class="mb-3">
                 <label for="login" class="form-label">Логин</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required name="login">
               </div>
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Адрес электронной почты</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required name="email">
               </div>
             <div class="mb-3">
               <label for="exampleInputPassword1" class="form-label">Пароль</label>
-              <input type="password" class="form-control" id="exampleInputPassword1">
+              <input type="password" class="form-control" id="exampleInputPassword1" required name="password">
             </div>
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">Пароль еще раз</label>
-                <input type="password" class="form-control" id="exampleInputPassword1">
+                <input type="password" class="form-control" id="exampleInputPassword1" required name="rpassword">
               </div>
-            <div class="mb-3 form-check">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1">
-              <label class="form-check-label" for="exampleCheck1">Проверить меня</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            <input type="submit" value="Зарегистрироваться" class="btn btn-primary">
           </form>
       </div>
         </div>

@@ -1,26 +1,28 @@
 <?php
-include_once './class/MainClass.php';
-if (isset($_POST['login'])){
-    $login = $_POST['login'];
-    $pass = $_POST['pass'];
-    $auth = new MainClass();
-    $auth->AuthUser($login, $pass);
+
+/*
+ * Определение главной страницы
+ * Демонстрация главной страницы
+ * Проверка подтверждения регистрации
+ */
+
+require_once 'db_connect.php';
+
+//Главная страница
+if ($_GET['show'] == 'main' || !isset($_GET['show'])){
+    require './pages/mainlist.html';
+}
+
+//Подтверждение регистрации
+if (isset($_GET['reg']))
+{
+    $hash = $_GET['hash'];
+    $rs = $db->query("SELECT * FROM users WHERE hash = '$hash'")->fetch();
+    if (!empty($rs['login']))
+    {
+        $one = 1;
+        $db->query("UPDATE users SET status = '$one' WHERE hash = '$hash'");
+        header("location: ../pages/authorizationlist.html");
+    }
 }
 ?>
-<!doctype html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Авторизация</title>
-</head>
-<body>
-<form method="POST" action="./">
-    <input type="text" name="login">
-    <input type="password" name="pass">
-    <input type="submit" value="Войти">
-</form>
-</body>
-</html>

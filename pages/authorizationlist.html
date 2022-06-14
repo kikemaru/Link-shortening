@@ -14,7 +14,7 @@
           <a class="navbar-brand" href="#">LinkShorter</a>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-              <a class="nav-link" href="mainlist.html">Главная</a>
+              <a class="nav-link" href="../">Главная</a>
               <a class="nav-link" href="reglist.html">Регистрация</a>
               <a class="nav-link active" aria-current="page" href="authorizationlist.html">Личный кабинет</a>
             </div>
@@ -26,21 +26,16 @@
 <div class="content">
     <h2>Войдите в аккаунт</h2>
     <a href="reglist.html">Зарегистрироваться</a>
-    <form>
+    <form method="POST" action="../function/function.php">
         <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">Адрес электронной почты</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+          <label for="exampleInputEmail1" class="form-label">Логин</label>
+          <input name="login" type="text" class="form-control" id="exampleInputEmail1" required>
         </div>
         <div class="mb-3">
           <label for="exampleInputPassword1" class="form-label">Пароль</label>
-          <input type="password" class="form-control" id="exampleInputPassword1">
+          <input name="password" type="password" class="form-control" id="exampleInputPassword1" required>
         </div>
-        <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="exampleCheck1">
-          <label class="form-check-label" for="exampleCheck1">Соглашаюсь на обработку персональных данных</label>
-        </div>
-        <!--При нажатии на кнопку "Войти" - переход в личный кабинет - расположение: ..|pages|perarealist.html -->
-        <button type="submit" class="btn btn-primary">Войти</button> 
+        <input type="submit" value="Войти" class="btn btn-primary">
       </form>
 </div>
         </div>
