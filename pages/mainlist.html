@@ -18,6 +18,7 @@
               <a class="nav-link active" aria-current="page" href="./">Главная</a>
               <a class="nav-link" href="./pages/reglist.html">Регистрация</a>
               <a class="nav-link" href="./pages/authorizationlist.html">Личный кабинет</a>
+              <img class="imglg" src="https://okeygeek.ru/wp-content/uploads/2020/11/share-link.png">
             </div>
           </div>
         </div>
@@ -29,8 +30,8 @@
         <p class="lead">Здесь вы можете сократить длинные ссылки и проводить анализ по их использованию</p>
         <div class="shorter">
           <form method="POST" action="./function/function.php">
-              <input type="text" name="link" size="100" required placeholder="http://...">
-              <input type="submit" value="Сократить" class="btn btn-primary">
+              <input type="text" name="link" id="inp" required placeholder="http://...">
+              <input type="submit" value="Сократить" class="btn btn-primary" id="btnsokr">
           </form>
         </div>
       </div>
