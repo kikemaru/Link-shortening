@@ -46,27 +46,27 @@ if ($_GET['statusup'] == 'on'){
 </head>
 <body>
 <center>
-<nav class="navbar navbar-inverse" style="max-width: 800px; margin-top: 40px;">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="collapsed navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-9" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="#" class="navbar-brand">LinkShorter</a>
-        </div> <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-9">
-            <ul class="nav navbar-nav">
-                <li <?php if ($_GET['page'] == 'main' || !isset($_GET['page'])){ echo 'class="active"';}?>><a href="./?page=main">Главная</a></li>
-                <li <?php if ($_GET['page'] == 'setting'){ echo 'class="active"';}?>><a href="./?page=setting">Настройки</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="./?exit">Выйти</a></li>
-            </ul>
+    <nav class="navbar navbar-inverse" style="max-width: 800px; margin-top: 40px;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="collapsed navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-9" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="#" class="navbar-brand">LinkShorter</a>
+            </div> <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-9">
+                <ul class="nav navbar-nav">
+                    <li <?php if ($_GET['page'] == 'main' || !isset($_GET['page']) || $_GET['page'] == 'log'){ echo 'class="active"';}?>><a href="./?page=main">Главная</a></li>
+                    <li <?php if ($_GET['page'] == 'setting'){ echo 'class="active"';}?>><a href="./?page=setting">Настройки</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="./?exit">Выйти</a></li>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
     <p style="margin-right: 665px;"><strong>Сократить ссылку:</strong></p>
     <form method="POST" action="./">
         <input type="hidden" name="func" value="short">
@@ -77,53 +77,91 @@ if ($_GET['statusup'] == 'on'){
             </span>
         </div>
     </form><br>
-    <?php if ($_GET['delete'] == 'success'){ echo '<div class="alert alert-success" role="alert" style="max-width: 800px;">Ссылка успешно удалена!</div>'; }
-    if ($_GET['status'] == 'off'){ echo '<div class="alert alert-warning" role="alert" style="max-width: 800px;">Статус успешно изменен. Ссылка отключена!</div>'; }
-    if ($_GET['status'] == 'on'){ echo '<div class="alert alert-warning" role="alert" style="max-width: 800px;">Статус успешно изменен. Ссылка включена!</div>'; }?>
-    <table class="table table-striped" style="max-width: 800px;">
-        <thead>
-        <th>Ссылка</th>
-        <th>Redirect</th>
-        <th>Лог</th>
-        <th>Статус</th>
-        <th></th>
-        </thead>
-        <tbody>
-        <?php
-        $rs = $db->query("SELECT * FROM link WHERE id_users = '$uid_user'");
-        $rs->execute();
-        while($res = $rs->fetch(PDO::FETCH_BOTH)){
-            $short = $res['code_link'];
-            $mainlink = $res['redirect'];
-            $idlink = $res['id'];
-            $status_link = $res['status'];
-            $status = $class->GetStatus($status_link);
-            echo '
+    <?php if ($_GET['page'] == 'main' || !isset($_GET['page'])){ ?>
+        <?php if ($_GET['delete'] == 'success'){ echo '<div class="alert alert-success" role="alert" style="max-width: 800px;">Ссылка успешно удалена!</div>'; }
+        if ($_GET['status'] == 'off'){ echo '<div class="alert alert-warning" role="alert" style="max-width: 800px;">Статус успешно изменен. Ссылка отключена!</div>'; }
+        if ($_GET['status'] == 'on'){ echo '<div class="alert alert-warning" role="alert" style="max-width: 800px;">Статус успешно изменен. Ссылка включена!</div>'; }?>
+        <table class="table table-striped" style="max-width: 800px;">
+            <thead>
+            <th>Ссылка</th>
+            <th>Redirect</th>
+            <th>Лог</th>
+            <th>Статус</th>
+            <th></th>
+            </thead>
+            <tbody>
+            <?php
+            $rs = $db->query("SELECT * FROM link WHERE id_users = '$uid_user'");
+            $rs->execute();
+            while($res = $rs->fetch(PDO::FETCH_BOTH)){
+                $short = $res['code_link'];
+                $mainlink = $res['redirect'];
+                $idlink = $res['id'];
+                $status_link = $res['status'];
+                $status = $class->GetStatus($status_link);
+                echo '
           <tr>
           <td>http://localhost/-'.$short.'</td>
           <td>'.$mainlink.'</td>
-          <td><a href="">show log</a></td>
+          <td><a href="./?page=log&id='.$idlink.'">show log</a></td>
           <td>'.$status.'</td>';
-            if ($status_link == 0) {
-                echo '
+                if ($status_link == 0) {
+                    echo '
           <td><a href="./?statusup=off&link=' . $idlink . '"><span class="glyphicon glyphicon-off" aria-hidden="true"></span></a> &nbsp;&nbsp;
           <a href="./?delete=link&link=' . $idlink . '"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
           </tr>';
-            } elseif ($status_link == 1){
-                echo '
+                } elseif ($status_link == 1){
+                    echo '
           <td><a href="./?statusup=on&link=' . $idlink . '"><span class="glyphicon glyphicon-off" aria-hidden="true"></span></a> &nbsp;&nbsp;
           <a href="./?delete=link&link=' . $idlink . '"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
           </tr>';
-            } else {
-                echo '
+                } else {
+                    echo '
           <td>
           <a href="./?delete=link&link=' . $idlink . '"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
           </tr>';
+                }
             }
-        }
+            ?>
+            </tbody>
+        </table>
+    <?php } elseif ($_GET['page'] == 'log'){ ?>
+        <?php
+        $logid = $_GET['id'];
+        $rslink = $db->query("SELECT * FROM link WHERE id = '$logid'")->fetch();
+        $hashlink = $rslink['code_link'];
+
+        $query=$db->query("SELECT COUNT(*) as count FROM log WHERE id_link = '$logid'");
+        $query->setFetchMode(PDO::FETCH_ASSOC);
+        $row=$query->fetch();
+        $count=$row['count'];
         ?>
-        </tbody>
-    </table>
+        <div class="panel panel-info" style="max-width: 800px;">
+            <div class="panel-heading">
+                <h3 class="panel-title" style="text-align: left;"><?php echo "Лог ссылки <b>$hashlink</b> | количество переходов - ($count)"; ?></h3>
+            </div>
+            <div class="panel-body" style="text-align: left;">
+                <?php echo ''.$login.' >> log show -> id ('.$logid.') '; ?><br><br>
+                <?php
+                $rslog = $db->query("SELECT * FROM log WHERE id_link = '$logid'");
+                $rslog->execute();
+                while($res = $rslog->fetch(PDO::FETCH_BOTH)){
+                    $iplog = $res['ip'];
+                    $reflog = $res['referer'];
+                    $clientlog = $res['client'];
+                    $datelog = $res['date_time'];
+                    echo '<small>
+                    [ip visitor] -> '.$iplog.'<br>
+                    [from] -> '.$reflog.'<br>
+                    [client] -> '.$clientlog.'<br>
+                    [datetime] -> '.$datelog.'
+                    </small> <br> <hr>';
+                }
+                ?>
+            </div>
+        </div>
+    <?php } elseif ($_GET['page'] == 'setting'){ ?>
+    <?php } ?>
 </center>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
