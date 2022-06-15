@@ -213,7 +213,32 @@ use PDO; //Пространство имен PDO
             }
 
 
+            //Получение статуса
+        public function GetStatus($status)
+        {
+            switch ($status) {
+                case 0:
+                    return '<font color="green">Работает</font>';
+                    break;
+                case 1:
+                    return '<font color="orange">Отключена</font>';
+                    break;
+                case 2:
+                    return '<font color="red">Заблокирована</font>';
+                    break;
+            }
+        }
 
+
+
+
+        //Выход
+        function UserQuit()
+        {
+            //Уничтожение сессии
+            unset($_SESSION['name']);
+            header("location: ../");
+        }
 
 
 

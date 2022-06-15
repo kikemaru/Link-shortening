@@ -38,11 +38,5 @@ if (isset($_POST['link'])){
     }
 }
 
-function UserQuit($login)
-{
-    //Уничтожение сессии
-    unset($_SESSION['name']);
-    header("location: ../");
-}
 
 
