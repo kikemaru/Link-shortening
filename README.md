@@ -1,2 +1,2 @@
 # Link-shortening
- educational practice
+practice
